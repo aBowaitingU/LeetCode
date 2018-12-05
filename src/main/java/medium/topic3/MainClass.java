@@ -7,18 +7,38 @@ import java.io.InputStreamReader;
 
 class Solution {
     public String longestPalindrome(String s) {
-        for (int k = 2; k < 2 * s.length() - 2; k++) {
+        if (s.length() == 0) {
+             return "";
+        }
+        int maxLen = 0;
+        int strStart = 0;
+        int strEnd = 0;
+        for (int k = 2; k < 2 * s.length() - 1; k++) {
+            int i, j;
             if (k % 2 == 0) {
-
+                i = k / 2 - 1;
+                j = k / 2;
             } else {
+                i = k / 2 - 1;
+                j = k / 2 + 1;
+            }
 
+            while (s.charAt(i) == s.charAt(j)) {
+                if (maxLen < j - i + 1) {
+                    maxLen = j - i + 1;
+                    strStart = i;
+                    strEnd = j;
+                }
+                if (i == 0 || j == s.length() - 1) {
+                    break;
+                }
+                i--;
+                j++;
             }
         }
+        return s.substring(strStart, strEnd + 1);
     }
 
-    private boolean isPalindromic (String palindromicStr) {
-
-    }
 }
 
 public class MainClass {
