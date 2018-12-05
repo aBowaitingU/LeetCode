@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 class Solution {
     public String longestPalindrome(String s) {
-        if (s.length() == 0) {
+        if (s == null || s.length() == 0) {
              return "";
         }
         int maxLen = 0;
@@ -23,17 +23,16 @@ class Solution {
                 j = k / 2 + 1;
             }
 
-            while (s.charAt(i) == s.charAt(j)) {
-                if (maxLen < j - i + 1) {
-                    maxLen = j - i + 1;
-                    strStart = i;
-                    strEnd = j;
-                }
-                if (i == 0 || j == s.length() - 1) {
-                    break;
-                }
+            while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
                 i--;
                 j++;
+            }
+            // 将判定放在循环后，避免每次循环都判定一次，增加开销
+            // 此时，真正的回文字符串的位置应该是i + 1和j - 1
+            if (maxLen < j - i - 1) {
+                maxLen = j - i - 1;
+                strStart = ++i;
+                strEnd = --j;
             }
         }
         return s.substring(strStart, strEnd + 1);
