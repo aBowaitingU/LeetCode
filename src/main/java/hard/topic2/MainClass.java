@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
+/*
 // 使用动态规划解决
 class Solution {
     public boolean isMatch(String s, String p) {
@@ -26,7 +26,7 @@ class Solution {
         return memory[sLen][pLen];
     }
 }
-
+*/
 /*
 // 在上面方法的基础上，由于每次都只使用了memory表中相邻的两行，因此可以进一步降低代码的空间复杂度如下
 class Solution {
@@ -59,7 +59,7 @@ class Solution {
     }
 }
 */
-/*
+
 // 把模式P拆分成多个子模式,子模式分为完全匹配和动态匹配。然后用深度优先的方式进行搜索，只要找到一个符合的组合就返回。
 class Solution {
     class PatternNode{
@@ -81,6 +81,7 @@ class Solution {
     }
 
     public boolean matchPattern(PatternNode node,String s){
+        // sp指示字符串s当前索引的位置
         int sp = 0;
         if(node.pre != null){
             sp = node.pre.endIndex + 1;
@@ -91,6 +92,7 @@ class Solution {
                 boolean isMatch = true;
                 int i = 0;
                 for(;i<node.str.length();i++){
+                    // 全部匹配，当s[sp + i]与node[i]不等且node[i]不等于'.'时，匹配失败
                     if((s.charAt(sp+i) != node.str.charAt(i) && node.str.charAt(i) != '.')){
                         isMatch = false;
                         break;
@@ -121,6 +123,8 @@ class Solution {
                 if(s.charAt(t) == node.str.charAt(0) || node.str.charAt(0) == '.'){
                     node.startIndex = sp;
                     node.endIndex = t;
+                    // t-sp表示匹配字符串的个数，最初t-sp = 0，表示匹配0个字符
+                    // 枚举了所有匹配字符个数的可能，进行一个深度的搜索，当存在一个t-sp，时后续的s和node匹配，则直接返回true
                     if(node.next!=null){
                         if(matchPattern(node.next,s)){
                             return true;
@@ -194,7 +198,7 @@ class Solution {
         return matchPattern(pnList,s);
     }
 }
-*/
+
 
 /*
 class Solution {
