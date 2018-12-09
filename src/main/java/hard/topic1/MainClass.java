@@ -1,4 +1,4 @@
-package main.java.hard.topic1;
+package hard.topic1;
 
 
 import java.io.BufferedReader;
