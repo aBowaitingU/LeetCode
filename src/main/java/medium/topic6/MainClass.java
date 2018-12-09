@@ -4,6 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+// 双指针法
+class Solution {
+    public int maxArea(int[] height) {
+        int maxarea = 0, l = 0, r = height.length - 1;
+        while (l < r) {
+            maxarea = Math.max(maxarea, Math.min(height[l], height[r]) * (r - l));
+            if (height[l] < height[r])
+                l++;
+            else
+                r--;
+        }
+        return maxarea;
+    }
+}
+
+/*
 // 暴力法，效率很低
 class Solution {
     public int maxArea(int[] height) {
@@ -16,6 +32,7 @@ class Solution {
         return maxSize;
     }
 }
+*/
 
 public class MainClass {
     public static int[] stringToIntegerArray(String input) {
