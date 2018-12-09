@@ -201,6 +201,7 @@ class Solution {
 
 
 /*
+// 失败代码
 class Solution {
     public boolean isMatch(String s, String p) {
         // p = ""时
