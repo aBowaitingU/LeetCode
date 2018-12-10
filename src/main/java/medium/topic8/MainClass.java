@@ -15,6 +15,7 @@ class Solution {
         int negSize = 0;
         int posSize = 0;
         int zeroSize = 0;
+        // 记录数组中大于0，小于0以及等于0的元素的个数，以及数组的最大值和最小值
         for (int v : nums) {
             if (v < minValue)
                 minValue = v;
@@ -27,10 +28,13 @@ class Solution {
             else
                 zeroSize++;
         }
+        // 数组中存在至少3个0时，[0, 0, 0]为一个结果
         if (zeroSize >= 3)
             res.add(Arrays.asList(0, 0, 0));
+        // 当数组中不存在正数或负数，则直接返回结果数组
         if (negSize == 0 || posSize == 0)
             return res;
+        // 剔除数组中一些过大或过小的数，这些数不可能让条件成立，进一步减少迭代的次数
         if (minValue * 2 + maxValue > 0)
             maxValue = -minValue * 2;
         else if (maxValue * 2 + minValue < 0)
@@ -41,6 +45,8 @@ class Solution {
         int[] poses = new int[posSize];
         negSize = 0;
         posSize = 0;
+        // map[value]表示值value + minValue在输入数组的个数
+        // poses数组和negs数组存储了输入数组中每一个不同的正数和负数值（没有重复），最后将poses和negs排序
         for (int v : nums) {
             if (v >= minValue && v <= maxValue) {
                 if (map[v - minValue]++ == 0) {
@@ -53,15 +59,21 @@ class Solution {
         }
         Arrays.sort(poses, 0, posSize);
         Arrays.sort(negs, 0, negSize);
+
+        // 随着nv的减小，每次basej都会>=上一次迭代的basej，basej设置在外部可以有效减少basej++的次数
         int basej = 0;
         for (int i = negSize - 1; i >= 0; i--) {
             int nv = negs[i];
             int minp = (-nv) >>> 1;
             while (basej < posSize && poses[basej] < minp)
                 basej++;
+            // pv >= (int)(-nv / 2)
+            // 随着pv的增大，cv不断减小，cv可能小到变成负数，但是cv不能比nv还要小
             for (int j = basej; j < posSize; j++) {
                 int pv = poses[j];
                 int cv = 0 - nv - pv;
+                // 我们只考虑[nv,pv]间的cv值，超过这个范围的值，避免后续迭代得出重复结果
+                // 且如果cv==nv或pv，需要查看cv值在输入数组的中是否有重复出现（通过map实现）
                 if (cv >= nv && cv <= pv) {
                     if (cv == nv) {
                         if (map[nv - minValue] > 1)
