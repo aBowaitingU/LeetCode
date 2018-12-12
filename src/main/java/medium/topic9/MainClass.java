@@ -3,10 +3,33 @@ package medium.topic9;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 class Solution {
     public int threeSumClosest(int[] nums, int target) {
-        return 0;
+        Arrays.sort(nums);
+        int result = Integer.MAX_VALUE;
+        int minGap = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length - 2; i++) {
+            int l = i + 1;
+            int r = nums.length - 1;
+            while (l < r) {
+                int threeSum = nums[i] + nums[l] + nums[r];
+                if (Math.abs(threeSum - target) < minGap) {
+                    result = threeSum;
+                    minGap = Math.abs(threeSum - target);
+                }
+                if (threeSum > target) {
+                    r--;
+                } else if (threeSum < target) {
+                    l++;
+                } else {
+                    // 当等于target时，肯定是最接近的
+                    return target;
+                }
+            }
+        }
+        return result;
     }
 }
 
