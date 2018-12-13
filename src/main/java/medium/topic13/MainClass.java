@@ -3,11 +3,24 @@ package medium.topic13;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class Solution {
     public List<String> generateParenthesis(int n) {
-        return null;
+        List<List<String>> lists = new ArrayList<>(2);
+        List<String> startList = new ArrayList<>(Arrays.asList("()"));
+        if (n == 1) {
+            return startList;
+        }
+
+        for (int i = 1; i < n; i++) {
+
+        }
+
+
+
     }
 }
 
