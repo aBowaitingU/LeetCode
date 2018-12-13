@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
+// 错的
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<List<String>> lists = new ArrayList<>(2);
@@ -14,13 +15,29 @@ class Solution {
         if (n == 1) {
             return startList;
         }
-
+        lists.add(startList);
         for (int i = 1; i < n; i++) {
-
+            List<String> preList = lists.get((i - 1) % 2);
+            List<String> list = new ArrayList<>(preList.size() * 3 - 1);
+            for (int j = 0; j < preList.size(); j++) {
+                if (j == 0) {
+                    list.add(preList.get(j) + "()");
+                    list.add("(" + preList.get(j) + ")");
+                } else {
+                    list.add("()" + preList.get(j));
+                    list.add(preList.get(j) + "()");
+                    list.add("(" + preList.get(j) + ")");
+                }
+            }
+            if (i == 1) {
+                lists.add(list);
+            } else {
+                lists.set(i % 2, list);
+            }
         }
-
-
-
+        List<String> result = lists.get((n - 1) % 2);
+        Collections.sort(result);
+        return result;
     }
 }
 
