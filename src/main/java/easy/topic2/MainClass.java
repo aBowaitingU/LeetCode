@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-// 不将转换为字符串的解法
+// 不将整数转换为字符串的解法
 class Solution {
     public boolean isPalindrome(int x) {
         if (x < 0 || (x != 0 && x % 10 == 0)) { //x是10的倍数一定不是回文串

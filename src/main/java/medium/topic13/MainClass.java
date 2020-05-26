@@ -7,36 +7,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-// 错的
+import java.util.stream.Collectors;
+
+
 class Solution {
-    public List<String> generateParenthesis(int n) {
-        List<List<String>> lists = new ArrayList<>(2);
-        List<String> startList = new ArrayList<>(Arrays.asList("()"));
-        if (n == 1) {
-            return startList;
+    class Parenthesis {
+        String temp;
+        int left;
+        int right;
+
+        public Parenthesis(String temp, int left, int right) {
+            this.temp = temp;
+            this.left = left;
+            this.right = right;
         }
-        lists.add(startList);
-        for (int i = 1; i < n; i++) {
-            List<String> preList = lists.get((i - 1) % 2);
-            List<String> list = new ArrayList<>(preList.size() * 3 - 1);
-            for (int j = 0; j < preList.size(); j++) {
-                if (j == 0) {
-                    list.add(preList.get(j) + "()");
-                    list.add("(" + preList.get(j) + ")");
-                } else {
-                    list.add("()" + preList.get(j));
-                    list.add(preList.get(j) + "()");
-                    list.add("(" + preList.get(j) + ")");
+    }
+    public List<String> generateParenthesis(int n) {
+        List<Parenthesis> list1 = new ArrayList<>();
+        List<Parenthesis> list2 = new ArrayList<>();
+        list1.add(new Parenthesis("", 0, 0));
+
+        for (int i = 0; i < 2 * n; i++) {
+            //
+            List<Parenthesis> listFrom, listTo;
+            if (i % 2 == 0) {
+                listFrom = list1;
+                listTo = list2;
+            } else {
+                listFrom = list2;
+                listTo = list1;
+            }
+
+            for (Parenthesis parenthesis : listFrom) {
+                if (parenthesis.left == parenthesis.right) {
+                    listTo.add(new Parenthesis(parenthesis.temp + "(", parenthesis.left + 1, parenthesis.right));
+                } else if (parenthesis.left > parenthesis.right) {
+                    listTo.add(new Parenthesis(parenthesis.temp + ")", parenthesis.left, parenthesis.right + 1));
+                    if (parenthesis.left < n) {
+                        listTo.add(new Parenthesis(parenthesis.temp + "(", parenthesis.left + 1, parenthesis.right));
+                    }
                 }
             }
-            if (i == 1) {
-                lists.add(list);
-            } else {
-                lists.set(i % 2, list);
-            }
+            listFrom.clear();
         }
-        List<String> result = lists.get((n - 1) % 2);
-        Collections.sort(result);
+        List<String> result = list1.stream().map(p -> p.temp).collect(Collectors.toList());
         return result;
     }
 }

@@ -1,24 +1,26 @@
-package easy.topic1;
+package easy.topic8;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> numMap = new HashMap<>(nums.length);
-        for (int i = 0; i < nums.length; i++) {
-            int valueNeed = target - nums[i];
-            //不可能发生重复引用i的问题
-            if (numMap.containsKey(valueNeed)) {
-                return new int[] {numMap.get(valueNeed), i};
-            }
-            numMap.put(nums[i], i);
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
         }
 
-        throw new IllegalArgumentException("no two sum solution");
+        int index = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[index]) {
+                index++;
+                if (i != index) {
+                    nums[index] = nums[i];
+                }
+            }
+        }
+        return index + 1;
+
     }
 }
 
@@ -61,12 +63,9 @@ public class MainClass {
         String line;
         while ((line = in.readLine()) != null) {
             int[] nums = stringToIntegerArray(line);
-            line = in.readLine();
-            int target = Integer.parseInt(line);
 
-            int[] ret = new Solution().twoSum(nums, target);
-
-            String out = integerArrayToString(ret);
+            int ret = new Solution().removeDuplicates(nums);
+            String out = integerArrayToString(nums, ret);
 
             System.out.print(out);
         }
